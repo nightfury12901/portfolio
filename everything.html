@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinmay Mishra - Engineering Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #000000;
+            --accent: #666666;
+            --border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* Interactive Particle Network Background */
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .loader-text {
+            font-size: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .loader-number {
+            font-size: 3rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .loader-number::before { content: '['; color: var(--accent); }
+        .loader-number::after { content: '%]'; color: var(--accent); }
+
+        /* Updated Navigation with CV & Certificates buttons */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            z-index: 1001;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--text-primary);
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: 'JetBrains Mono', monospace;
+            z-index: 1001;
+        }
+
+        .nav-button:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .nav-button.primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .nav-button.primary:hover {
+            background: var(--accent);
+        }
+
+        /* HERO SECTION - 45:55 SPLIT */
+        .hero {
+            height: 100vh;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-left {
+            width: 45%;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-right {
+            width: 55%;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        /* Animated starfield fallback */
+        .starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 200px 50px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(2px 2px at 240px 90px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 300px 200px;
+            animation: moveStars 20s linear infinite;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-200px); }
+        }
+
+        #space-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* INTERACTIVE PARTICLE ANIMATION IN LEFT SECTION */
+        #left-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Name styling */
+        .hero-name-container {
+            position: absolute;
+            top: 50%;
+            left: calc(50% + 35px);
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .hero-name {
+            font-size: clamp(4rem, 10vw, 10rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 0.85;
+            text-transform: uppercase;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .hero-name-line {
+            display: block;
+            margin: 0.1em 0;
+        }
+
+        .hero-letter {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .hero-letter.white-bg {
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .hero-letter.video-bg {
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        /* Projects Section */
+        .projects {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            line-height: 0.85;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--accent);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* PROJECT CARDS */
+        .project-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 350px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .project-overlay {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            color: var(--text-primary);
+            transition: transform 0.4s ease;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .project-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: width 0.4s ease;
+            z-index: 1;
+        }
+
+        .project-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 100%;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            transform: translateX(100%);
+            transition: transform 0.4s ease 0.1s;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateX(-65%);
+        }
+
+        .project-card:hover .project-image {
+            width: 35%;
+        }
+
+        .project-card:hover .project-content {
+            transform: translateX(0);
+        }
+
+        .project-overlay .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.2;
+        }
+
+        .project-content .project-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.1;
+            color: var(--text-secondary);
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .tech-badge {
+            padding: 0.3rem 0.8rem;
+            background: var(--accent);
+            color: var(--text-primary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .project-content .tech-badge {
+            background: rgba(0,0,0,0.1);
+            color: var(--text-secondary);
+        }
+
+        .project-description {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            flex-grow: 1;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .project-link {
+            padding: 0.8rem 1.5rem;
+            background: var(--text-secondary);
+            color: var(--bg-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            flex: 1;
+        }
+
+        .project-link:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Certificates Section */
+        .certificates {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .certificates-content {
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .certificates-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 0.85;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .certificate-item {
+            padding: 2rem;
+            border: 2px solid var(--text-secondary);
+            border-radius: 12px;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .certificate-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .certificate-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .certificate-org {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* About & Contact Sections */
+        .about {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .about-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            line-height: 0.85;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .about-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: 1px solid var(--text-primary);
+            background: transparent;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 6px;
+        }
+
+        .btn.primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn.primary:hover {
+            background: var(--accent);
+        }
+
+        .contact {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            line-height: 0.85;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .contact-description {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-link {
+            padding: 2rem;
+            border: 1px solid var(--accent);
+            text-decoration: none;
+            color: inherit;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-link:hover {
+            background: var(--text-secondary);
+            color: var(--bg-secondary);
+            border-color: var(--text-secondary);
+        }
+
+        .contact-link small {
+            display: block;
+            margin-top: 0.5rem;
+            opacity: 0.7;
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Entrance animations */
+        .hero-name-container {
+            opacity: 0;
+            animation: fadeInUp 2s ease forwards 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1.5rem 1rem;
+            }
+
+            .nav-buttons {
+                gap: 0.5rem;
+            }
+
+            .nav-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero-left, .hero-right {
+                width: 100%;
+                height: 50vh;
+            }
+
+            .hero-name {
+                font-size: clamp(3rem, 8vw, 6rem);
+            }
+
+            .hero-name-container {
+                left: calc(50% + 10px);
+            }
+
+            .projects, .about, .contact, .certificates {
+                padding: 4rem 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .project-card {
+                height: 300px;
+            }
+
+            .contact-links, .certificates-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom scrollbar for project content */
+        .project-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .project-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .project-content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Interactive Particle Network -->
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-content">
+            <div class="loader-text">Chinmay</div>
+            <div class="loader-number">0</div>
+            <div class="loader-text">Mishra</div>
+        </div>
+    </div>
+
+    <!-- Updated Navigation with CV & Certificates buttons -->
+    <nav class="nav">
+        <div class="nav-logo">CM</div>
+        <div class="nav-buttons">
+            <a href="/path-to-your-cv.pdf" target="_blank" class="nav-button primary">Download CV</a>
+            <a href="#certificates" class="nav-button">Certificates</a>
+            <a href="#contact" class="nav-button">Contact</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <!-- HERO SECTION - 45:55 SPLIT -->
+        <section class="hero" id="home">
+            <div class="hero-left">
+                <!-- Interactive particle animation canvas for left section -->
+                <canvas id="left-particles"></canvas>
+            </div>
+            <div class="hero-right">
+                <!-- Animated starfield background -->
+                <div class="starfield">
+                    <div class="stars"></div>
+                </div>
+                <!-- Video overlay -->
+                <video id="space-video" autoplay muted loop playsinline preload="auto">
+                    <source src="/18492-292594998_small.mp4" type="video/mp4">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                </video>
+            </div>
+            <!-- Name overlay -->
+            <div class="hero-name-container">
+                <div class="hero-name">
+                    <span class="hero-name-line">
+                        <span class="hero-letter">C</span><span class="hero-letter">H</span><span class="hero-letter">I</span><span class="hero-letter">N</span><span class="hero-letter">M</span><span class="hero-letter">A</span><span class="hero-letter">Y</span>
+                    </span>
+                    <span class="hero-name-line">
+                        <span class="hero-letter">M</span><span class="hero-letter">I</span><span class="hero-letter">S</span><span class="hero-letter">H</span><span class="hero-letter">R</span><span class="hero-letter">A</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects" id="projects">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Selected Works</h2>
+                <p class="section-description">
+                    A showcase of 7 engineering projects spanning AI, healthcare, and full-stack development
+                </p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1 - Dermify -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Dermify</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">Google Cloud</span>
+                            <span class="tech-badge">AutoML</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Dermify</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">Google Cloud Vertex AI</span>
+                            <span class="tech-badge">AutoML Vision</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">ML</span>
+                        </div>
+                        <p class="project-description">
+                            Advanced AI-powered dermatology application built using Google Cloud Vertex AI that accurately detects and classifies 8 different skin conditions including Acne, Atopic Dermatitis, Bullous Disorders, Melanoma, Psoriasis, Vascular Skin Lesions, Basal Cell Carcinoma, and Normal Skin. Achieved 93% PR AUC score, 89.44% precision, and 84.41% recall.
+                            
+                            <br><br>Key Features:
+                            <br>• 8 skin condition detection
+                            <br>• Medical-grade accuracy (93% PR AUC)
+                            <br>• Clinical decision support
+                            <br>• Telemedicine integration
+                            <br>• Expert-level dermatological analysis
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 - Cardiofy -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Cardiofy</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">PyTorch</span>
+                            <span class="tech-badge">OpenCV</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Cardiofy</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">PyTorch</span>
+                            <span class="tech-badge">TensorFlow</span>
+                            <span class="tech-badge">OpenCV</span>
+                            <span class="tech-badge">ML</span>
+                            <span class="tech-badge">Python</span>
+                        </div>
+                        <p class="project-description">
+                            AI-powered cardiac monitoring system that records user heartrate for 10 seconds and calculates frequency to categorize heart conditions into 5 groups: extrahls, murmur, extrastole, artefact, and normal. Built using advanced machine learning algorithms with PyTorch, TensorFlow, and OpenCV for real-time cardiac analysis.
+                            
+                            <br><br>Key Features:
+                            <br>• Real-time heart rate monitoring
+                            <br>• 5-category cardiac classification
+                            <br>• 10-second analysis window
+                            <br>• Medical dataset training
+                            <br>• Instant cardiac assessment
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 - Healthcare Platform -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Healthcare AI Platform</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">BioMistral-7B</span>
+                            <span class="tech-badge">Node.js</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Healthcare AI Platform</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">BioMistral-7B</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">OpenCV</span>
+                            <span class="tech-badge">TensorBoard</span>
+                        </div>
+                        <p class="project-description">
+                            Enterprise-grade microservices-based medical diagnosis platform integrating fine-tuned BioMistral-7B for consultations, computer vision for skin analysis, and advanced medical imaging. Features real-time GPU-accelerated inference (2-4 second responses), comprehensive medical image preprocessing, and hospital-ready B2B architecture.
+                            
+                            <br><br>Key Highlights:
+                            <br>• Multi-modal AI: consultation, skin analysis, imaging
+                            <br>• Sub-5 second AI responses
+                            <br>• Hospital deployment ready
+                            <br>• Medical-grade accuracy
+                            <br>• Revenue potential: ₹50K-3L monthly
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4 - Creators Hub -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Creators Hub</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">AI/ML</span>
+                            <span class="tech-badge">Analytics</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Creators Hub (AI/ML Models)</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">AI/ML</span>
+                            <span class="tech-badge">Analytics</span>
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">Python</span>
+                        </div>
+                        <p class="project-description">
+                            Comprehensive AI-powered influencer management suite streamlining content creation, audience growth, and monetization. Features advanced analytics, audience insights, automated scheduling, AI-driven content ideas, engagement tools, brand collaboration management, and monetization dashboards. 
+                            
+                            Includes specialized features for gaming (live overlays, highlight clippers), travel (itinerary sharing, deal alerts), fashion (virtual try-ons, lookbooks), finance (ROI calculators), beauty (ingredient analysis), and tech (review templates, code sharing).
+                            
+                            <br><br>Key Features:
+                            <br>• AI-powered content optimization
+                            <br>• Multi-platform analytics
+                            <br>• Automated scheduling & engagement
+                            <br>• Niche-specific tools
+                            <br>• Monetization optimization
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5 - Legal Demystifying -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">Legal Demystifying</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">NLP</span>
+                            <span class="tech-badge">AI</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">Demystifying Legal Documents</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">NLP</span>
+                            <span class="tech-badge">AI</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">TensorFlow</span>
+                            <span class="tech-badge">BERT</span>
+                        </div>
+                        <p class="project-description">
+                            AI-powered legal document simplification platform that extracts, summarizes, and explains complex legal terminology, making legal documents accessible to everyday users through advanced natural language processing and document analysis. 
+                            
+                            The platform uses state-of-the-art NLP models to break down legal jargon, highlight key clauses, provide plain-English explanations, and identify potential risks or important deadlines in contracts, agreements, and legal documents.
+                            
+                            <br><br>Key Features:
+                            <br>• Legal jargon simplification
+                            <br>• Key clause identification
+                            <br>• Risk assessment analysis
+                            <br>• Plain-English translations
+                            <br>• Document summarization
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 6 - IIT Professor Portfolio -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">IIT Professor Portfolio</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">Web Development</span>
+                            <span class="tech-badge">React</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">IIT Professor Portfolio Website</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Next.js</span>
+                            <span class="tech-badge">TypeScript</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">MongoDB</span>
+                        </div>
+                        <p class="project-description">
+                            Professional academic portfolio website designed for an IIT professor, showcasing research publications, academic achievements, course materials, and student resources. The platform features a sophisticated design with sections for research papers, teaching portfolio, academic timeline, publication metrics, and contact information.
+                            
+                            Built with modern web technologies to ensure fast loading, mobile responsiveness, and easy content management for academic professionals.
+                            
+                            <br><br>Key Features:
+                            <br>• Research publication showcase
+                            <br>• Academic achievement timeline
+                            <br>• Course material management
+                            <br>• Student resource portal
+                            <br>• Professional academic design
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Project</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 7 - FinTech -->
+                <article class="project-card">
+                    <div class="project-overlay">
+                        <h3 class="project-title">FinTech Platform</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">Coming Soon</span>
+                            <span class="tech-badge">FinTech</span>
+                        </div>
+                    </div>
+                    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80');"></div>
+                    <div class="project-content">
+                        <h3 class="project-title">FinTech Platform</h3>
+                        <div class="project-tech">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">Blockchain</span>
+                            <span class="tech-badge">AI/ML</span>
+                            <span class="tech-badge">Coming Soon</span>
+                        </div>
+                        <p class="project-description">
+                            Revolutionary financial technology platform currently in development. This comprehensive solution will feature advanced financial analytics, AI-powered investment recommendations, real-time market data processing, and secure blockchain-based transactions.
+                            
+                            The platform aims to democratize financial services through cutting-edge technology, making sophisticated financial tools accessible to a broader audience while maintaining enterprise-grade security and compliance standards.
+                            
+                            <br><br>Planned Features:
+                            <br>• AI-powered financial analytics
+                            <br>• Real-time market insights
+                            <br>• Blockchain security
+                            <br>• Investment recommendations
+                            <br>• Coming Soon - Stay Tuned!
+                        </p>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Coming Soon</a>
+                            <a href="#" class="project-link">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Certificates Section -->
+        <section class="certificates" id="certificates">
+            <div class="certificates-content">
+                <h2 class="certificates-title">Certificates & Achievements</h2>
+                <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem;">
+                    Recognition and achievements from hackathons, internships, and professional development
+                </p>
+                <div class="certificates-grid">
+                    <div class="certificate-item">
+                        <h3 class="certificate-title">Hackathon Winner</h3>
+                        <p class="certificate-org">TechXcelerate BITS Challenge 2025</p>
+                        <p>First place in AI category for innovative diagnostic solution</p>
+                    </div>
+                    <div class="certificate-item">
+                        <h3 class="certificate-title">IIT Delhi Internship</h3>
+                        <p class="certificate-org">An internship pertaining to communication</p>
+                        <p>2-month intensive program focused on motion actuation and communication through a laser</p>
+                    </div>
+                    <div class="certificate-item">
+                        <h3 class="certificate-title">AI Development Certificate</h3>
+                        <p class="certificate-org">Google Cloud Platform</p>
+                        <p>Professional certification in cloud-based AI and ML solutions</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="about-content">
+                <h2 class="about-title">About Me</h2>
+                <p class="about-text">
+                    I'm an engineering student passionate about the intersection of AI, healthcare technology, and full-stack development. 
+                    My work spans from advanced machine learning algorithms for medical diagnosis to comprehensive web platforms and innovative solutions.
+                </p>
+                <p class="about-text">
+                    Currently exploring cutting-edge applications of AI in healthcare, building scalable platforms, and developing 
+                    solutions that bridge the gap between complex technology and real-world problems, making advanced tools accessible to everyone.
+                </p>
+                <div class="about-cta">
+                    <a href="/path-to-your-cv.pdf" class="btn primary" target="_blank">Download CV</a>
+                    <a href="#contact" class="btn">Let's Connect</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="contact-content">
+                <h2 class="contact-title">Get In Touch</h2>
+                <p class="contact-description">
+                    Ready to collaborate on your next healthcare AI or full-stack project? Let's build something amazing together.
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:Chinmay@payfordeal.com" class="contact-link">
+                        Email
+                        <small>Chinmay@payfordeal.com</small>
+                    </a>
+                    <a href="https://www.linkedin.com/in/chinmay-mishra-a4aa80288" class="contact-link" target="_blank">
+                        LinkedIn
+                        <small>Chinmay Mishra</small>
+                    </a>
+                    <a href="https://github.com/nightfury12901" class="contact-link" target="_blank">
+                        GitHub
+                        <small>Chinmay Mishra's Github</small>
+                    </a>
+                    <a href="https://www.instagram.com/chinmxymishrx.06/" class="contact-link" target="_blank">
+                        Instagram
+                        <small>Chinmay Mishra's Instagram</small>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Interactive Particle Network for Full Background - INCREASED DENSITY
+        class ParticleNetwork {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouse = { x: 0, y: 0 };
+                this.animationId = null;
+                
+                this.init();
+                this.animate();
+                this.bindEvents();
+            }
+
+            init() {
+                this.resize();
+                this.createParticles();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            createParticles() {
+                this.particles = [];
+                const particleCount = Math.floor(window.innerWidth / 12);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.8,
+                        vy: (Math.random() - 0.5) * 0.8,
+                        radius: Math.random() * 3 + 1,
+                        alpha: Math.random() * 0.6 + 0.3,
+                        originalAlpha: Math.random() * 0.6 + 0.3
+                    });
+                }
+            }
+
+            updateParticles() {
+                this.particles.forEach((particle) => {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        const force = (150 - distance) / 150;
+                        particle.vx += dx * force * 0.0002;
+                        particle.vy += dy * force * 0.0002;
+                        particle.alpha = particle.originalAlpha + force * 0.4;
+                    } else {
+                        particle.alpha = particle.originalAlpha;
+                    }
+                    
+                    if (particle.x < 0 || particle.x > this.canvas.width) {
+                        particle.vx *= -1;
+                        particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
+                    }
+                    if (particle.y < 0 || particle.y > this.canvas.height) {
+                        particle.vy *= -1;
+                        particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
+                    }
+                });
+            }
+
+            drawParticles() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                this.ctx.lineWidth = 1;
+                
+                for (let i = 0; i < this.particles.length; i++) {
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const dx = this.particles[i].x - this.particles[j].x;
+                        const dy = this.particles[i].y - this.particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 140) {
+                            const opacity = (140 - distance) / 140 * 0.3;
+                            this.ctx.globalAlpha = opacity;
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                            this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+                
+                this.particles.forEach(particle => {
+                    this.ctx.globalAlpha = particle.alpha;
+                    this.ctx.fillStyle = 'white';
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+                
+                this.ctx.globalAlpha = 1;
+            }
+
+            animate() {
+                this.updateParticles();
+                this.drawParticles();
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+
+            bindEvents() {
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+
+                window.addEventListener('resize', () => {
+                    this.resize();
+                    this.createParticles();
+                });
+            }
+        }
+
+        // Left Section Particle Network - INCREASED DENSITY
+        class LeftParticleNetwork {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouse = { x: 0, y: 0 };
+                this.animationId = null;
+                
+                this.init();
+                this.animate();
+                this.bindEvents();
+            }
+
+            init() {
+                this.resize();
+                this.createParticles();
+            }
+
+            resize() {
+                const heroLeft = document.querySelector('.hero-left');
+                this.canvas.width = heroLeft.offsetWidth;
+                this.canvas.height = heroLeft.offsetHeight;
+            }
+
+            createParticles() {
+                this.particles = [];
+                const particleCount = Math.floor(this.canvas.width / 20);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.6,
+                        vy: (Math.random() - 0.5) * 0.6,
+                        radius: Math.random() * 2 + 1,
+                        alpha: Math.random() * 0.6 + 0.3,
+                        originalAlpha: Math.random() * 0.6 + 0.3
+                    });
+                }
+            }
+
+            updateParticles() {
+                this.particles.forEach((particle) => {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        const force = (120 - distance) / 120;
+                        particle.vx += dx * force * 0.0003;
+                        particle.vy += dy * force * 0.0003;
+                        particle.alpha = Math.min(particle.originalAlpha + force * 0.5, 1);
+                    } else {
+                        particle.alpha = particle.originalAlpha;
+                    }
+                    
+                    if (particle.x < 0 || particle.x > this.canvas.width) {
+                        particle.vx *= -1;
+                        particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
+                    }
+                    if (particle.y < 0 || particle.y > this.canvas.height) {
+                        particle.vy *= -1;
+                        particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
+                    }
+                });
+            }
+
+            drawParticles() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+                this.ctx.lineWidth = 1;
+                
+                for (let i = 0; i < this.particles.length; i++) {
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const dx = this.particles[i].x - this.particles[j].x;
+                        const dy = this.particles[i].y - this.particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 120) {
+                            const opacity = (120 - distance) / 120 * 0.3;
+                            this.ctx.globalAlpha = opacity;
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                            this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+                
+                this.particles.forEach(particle => {
+                    this.ctx.globalAlpha = particle.alpha;
+                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+                
+                this.ctx.globalAlpha = 1;
+            }
+
+            animate() {
+                this.updateParticles();
+                this.drawParticles();
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+
+            bindEvents() {
+                const heroLeft = document.querySelector('.hero-left');
+                
+                heroLeft.addEventListener('mousemove', (e) => {
+                    const rect = heroLeft.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+
+                heroLeft.addEventListener('mouseleave', () => {
+                    this.mouse.x = -1000;
+                    this.mouse.y = -1000;
+                });
+
+                window.addEventListener('resize', () => {
+                    this.resize();
+                    this.createParticles();
+                });
+            }
+        }
+
+        // Letter color calculation for hero section
+        function updateHeroLetterColors() {
+            const splitPoint = window.innerWidth * 0.45;
+            
+            const letters = document.querySelectorAll('.hero-letter');
+            letters.forEach(letter => {
+                const letterRect = letter.getBoundingClientRect();
+                const letterCenter = letterRect.left + (letterRect.width / 2);
+                
+                letter.classList.remove('white-bg', 'video-bg');
+                
+                if (letterCenter < splitPoint) {
+                    letter.classList.add('white-bg');
+                } else {
+                    letter.classList.add('video-bg');
+                }
+            });
+        }
+
+        // Video and starfield handling
+        const video = document.getElementById('space-video');
+        const starfield = document.querySelector('.starfield');
+        
+        if (starfield) starfield.style.display = 'block';
+        
+        if (video) {
+            video.addEventListener('loadeddata', () => {
+                console.log('Video loaded successfully');
+                video.style.display = 'block';
+                video.style.zIndex = '2';
+                if (starfield) starfield.style.display = 'none';
+            });
+            
+            video.addEventListener('error', (e) => {
+                console.log('Video failed to load, showing starfield');
+                video.style.display = 'none';
+                if (starfield) starfield.style.display = 'block';
+            });
+        }
+
+        // Preloader Animation
+        function initPreloader() {
+            let count = 0;
+            const numberEl = document.querySelector('.loader-number');
+            const preloader = document.getElementById('preloader');
+            
+            const countInterval = setInterval(() => {
+                count += Math.random() * 15 + 5;
+                if (count >= 100) {
+                    count = 100;
+                    clearInterval(countInterval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            initAnimations();
+                        }, 800);
+                    }, 500);
+                }
+                if (numberEl) numberEl.textContent = Math.floor(count);
+            }, 100);
+        }
+
+        // Project Cards Animation
+        function initProjectCardsAnimation() {
+            const cards = document.querySelectorAll('.project-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            gsap.to(entry.target, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.8,
+                                ease: "back.out(1.7)"
+                            });
+                        }, index * 200);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => observer.observe(card));
+        }
+
+        // Initialize all animations
+        function initAnimations() {
+            setTimeout(updateHeroLetterColors, 100);
+            window.addEventListener('resize', updateHeroLetterColors);
+
+            const sections = [
+                { selector: '.section-number', delay: 0 },
+                { selector: '.section-title', delay: 0.2 },
+                { selector: '.section-description', delay: 0.4 }
+            ];
+
+            sections.forEach(({ selector, delay }) => {
+                gsap.fromTo(selector, 
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: delay,
+                        scrollTrigger: {
+                            trigger: selector,
+                            start: "top 80%",
+                            end: "bottom 20%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Certificates section animations
+            const certificatesElements = ['.certificates-title', '.certificate-item'];
+            certificatesElements.forEach((selector, index) => {
+                gsap.fromTo(selector,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        scrollTrigger: {
+                            trigger: '.certificates',
+                            start: "top 70%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            const aboutElements = ['.about-title', '.about-text', '.about-cta'];
+            aboutElements.forEach((selector, index) => {
+                gsap.fromTo(selector,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.2,
+                        scrollTrigger: {
+                            trigger: '.about',
+                            start: "top 70%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            const contactElements = ['.contact-title', '.contact-description'];
+            contactElements.forEach((selector, index) => {
+                gsap.fromTo(selector,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.2,
+                        scrollTrigger: {
+                            trigger: '.contact',
+                            start: "top 70%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            gsap.fromTo('.contact-link',
+                { opacity: 0, y: 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: '.contact-links',
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            initProjectCardsAnimation();
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize everything
+        window.addEventListener('load', () => {
+            new ParticleNetwork('particleCanvas');
+            new LeftParticleNetwork('left-particles');
+            initPreloader();
+        });
+    </script>
+</body>
+</html>
